@@ -1,118 +1,142 @@
-# Mini ERP - Inventory & Sales Management System (Backend)
+# Mini ERP - Inventory & Sales Management System (Frontend)
 
-A RESTful backend API for the **Mini ERP - Inventory & Sales Management System** built with **Node.js, Express.js, TypeScript, MongoDB, and Mongoose**.
+A modern and responsive frontend for the **Mini ERP - Inventory & Sales Management System** built with **React, TypeScript, Vite, Tailwind CSS, and Redux Toolkit**.
 
 ---
 
-## 🚀 Tech Stack
+# 🚀 Tech Stack
 
-- Node.js
-- Express.js
+- React 19
 - TypeScript
-- MongoDB
-- Mongoose
-- JWT Authentication
-- Passport.js
-- Cloudinary (Image Upload)
-- Multer
-- Zod (Validation)
+- Vite
+- React Router
+- Redux Toolkit
+- RTK Query
+- Axios
+- Tailwind CSS
+- Shadcn UI
+- React Hook Form
+- Zod
+- Sonner
 
 ---
 
-## 📂 Project Structure
-
-```
-src/
-│
-├── app/
-│   ├── config/
-│   ├── middleware/
-│   ├── module/
-│   │   ├── auth/
-│   │   ├── product/
-│   │   ├── sales/
-│   │   └── dashboard/
-│   ├── routes/
-│   ├── utils/
-│   └── error/
-│
-├── app.ts
-├── server.ts
-└── index.ts
-```
-
----
-
-# Features
+# ✨ Features
 
 ## Authentication
 
-- JWT Authentication
 - Login
+- JWT Authentication
 - Protected Routes
-- Role Based Authorization
-
-### Roles
-
-- Admin
-- Manager
-- Employee
-
----
-
-## Product Module
-
-- Create Product
-- Update Product
-- Delete Product
-- Get All Products
-- Get Single Product
-- Product Image Upload
-- Search
-- Pagination
-
----
-
-## Sales Module
-
-- Create Sale
-- Multiple Product Support
-- Automatic Stock Update
-- Prevent Insufficient Stock Sales
-- Grand Total Calculation
-- Sales History
+- Role-Based Navigation
+- Persistent Login
 
 ---
 
 ## Dashboard
 
-- Total Products
-- Total Sales
+- Statistics Cards
+- Quick Actions
 - Low Stock Products
+- Responsive Dashboard Layout
 
 ---
 
-# Installation
+## Product Management
 
-## Clone the Repository
+- Product List
+- Add Product
+- Update Product
+- Delete Product
+- Image Upload
+- Search Products
+- Pagination
 
-```bash
-git clone https://github.com/pmppiyas/Mini-ERP-Inventory-Sales-Management_Bankend
+---
+
+## Sales Management
+
+- Create Sale
+- Select Multiple Products
+- Quantity Selection
+- Automatic Total Calculation
+- Stock Validation
+
+---
+
+## Responsive UI
+
+- Mobile Friendly
+- Sidebar Navigation
+- Responsive Dashboard
+- Modern Design using Shadcn UI
+
+---
+
+# 📂 Project Structure
+
+```text
+src/
+│
+├── assets/
+├── components/
+│   ├── common/
+│   ├── layout/
+│   └── ui/
+│
+├── hooks/
+├── interfaces/
+├── layouts/
+├── pages/
+│   ├── auth/
+│   ├── dashboard/
+│   ├── products/
+│   └── sales/
+│
+├── redux/
+│   ├── features/
+│   └── store.ts
+│
+├── routes/
+├── schemas/
+├── services/
+├── types/
+├── utils/
+│
+├── App.tsx
+├── main.tsx
+└── index.css
 ```
 
-## Go to Project Folder
+---
+
+# ⚙️ Installation
+
+## Clone Repository
 
 ```bash
-cd backend
+git clone https://github.com/pmppiyas/Mini-ERP-Inventory-Sales-Management_Frontend
 ```
+
+---
+
+## Navigate to Project
+
+```bash
+cd frontend
+```
+
+---
 
 ## Install Dependencies
+
+Using npm
 
 ```bash
 npm install
 ```
 
-or
+Using pnpm
 
 ```bash
 pnpm install
@@ -122,26 +146,16 @@ pnpm install
 
 # Environment Variables
 
-Create a **.env** file in the project root.
+Create a `.env` file in the project root.
 
 ```env
-PORT=5000
+VITE_API_URL=http://localhost:5000/api/v1
+```
 
-NODE_ENV=development
+For production:
 
-DATABASE_URL=your_mongodb_connection_string
-
-JWT_ACCESS_SECRET=your_access_secret
-JWT_ACCESS_EXPIRES=7d
-
-JWT_REFRESH_SECRET=your_refresh_secret
-JWT_REFRESH_EXPIRES=30d
-
-BCRYPT_SALT_ROUNDS=10
-
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
+```env
+VITE_API_URL=https://your-backend-url/api/v1
 ```
 
 ---
@@ -160,131 +174,132 @@ or
 pnpm dev
 ```
 
-Production
+---
+
+Production Build
 
 ```bash
 npm run build
-npm start
 ```
 
----
+Preview Build
 
-# API Base URL
-
-```
-http://localhost:5000/api/v1
+```bash
+npm run preview
 ```
 
 ---
 
 # Authentication
 
-Protected APIs require a JWT access token.
+The application uses JWT Authentication.
 
-Example
+After successful login:
 
-```
-Authorization: Bearer <access_token>
-```
-
----
-
-# API Endpoints
-
-## Authentication
-
-| Method | Endpoint    | Description |
-| ------ | ----------- | ----------- |
-| POST   | /auth/login | User Login  |
+- Access Token is stored securely.
+- Protected routes become accessible.
+- Navigation changes based on user role.
 
 ---
 
-## Products
+# User Roles
 
-| Method | Endpoint      | Description        |
-| ------ | ------------- | ------------------ |
-| GET    | /products     | Get All Products   |
-| GET    | /products/:id | Get Single Product |
-| POST   | /products     | Create Product     |
-| PATCH  | /products/:id | Update Product     |
-| DELETE | /products/:id | Delete Product     |
+### Admin
 
----
+- Full Dashboard Access
+- Manage Products
+- Manage Sales
 
-## Sales
+### Manager
 
-| Method | Endpoint | Description   |
-| ------ | -------- | ------------- |
-| POST   | /sales   | Create Sale   |
-| GET    | /sales   | Sales History |
+- Manage Products
+- Create Sales
 
----
+### Employee
 
-## Dashboard
-
-| Method | Endpoint   | Description          |
-| ------ | ---------- | -------------------- |
-| GET    | /dashboard | Dashboard Statistics |
+- View Products
+- Create Sales
 
 ---
 
-# Folder Architecture
+# Main Pages
 
-```
-app
-├── config
-├── middleware
-├── module
-│   ├── auth
-│   ├── dashboard
-│   ├── product
-│   └── sales
-├── routes
-├── utils
-└── error
+- Login
+- Dashboard
+- Products
+- Add Product
+- Edit Product
+- Sales
+- Create Sale
+- Profile
+
+---
+
+# API Configuration
+
+Base URL
+
+```text
+http://localhost:5000/api/v1
 ```
 
----
+All API requests are handled using:
 
-# Error Handling
-
-- Global Error Handler
-- Custom AppError
-- Validation Error Handling
-- Proper HTTP Status Codes
-- Consistent API Response
+- Axios
+- RTK Query
 
 ---
 
-# Security
+# Available Scripts
 
-- JWT Authentication
-- Password Hashing (bcrypt)
-- Role Based Authorization
-- Protected Routes
-- Input Validation
-
----
-
-# Scripts
+Development
 
 ```bash
 npm run dev
 ```
 
-Start development server.
+Build
 
 ```bash
 npm run build
 ```
 
-Build the project.
+Preview
 
 ```bash
-npm start
+npm run preview
 ```
 
-Run production server.
+Lint
+
+```bash
+npm run lint
+```
+
+---
+
+# Deployment
+
+Frontend can be deployed on:
+
+- Vercel (Recommended)
+- Netlify
+
+Backend should be deployed separately and the production API URL should be configured in the `.env` file.
+
+---
+
+# Best Practices
+
+- TypeScript
+- Component-Based Architecture
+- Feature-Based Folder Structure
+- Reusable Components
+- Global State Management using Redux Toolkit
+- API Handling with RTK Query
+- Form Validation with Zod & React Hook Form
+- Responsive Design
+- Clean Code Structure
 
 ---
 
@@ -296,4 +311,4 @@ Run production server.
 
 # License
 
-This project is developed for the **MERN Stack Technical Assessment**.
+This project was developed for the **MERN Stack Technical Assessment**.
