@@ -1,17 +1,17 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { RouterProvider } from 'react-router-dom';
+import './index.css';
+import { Provider as ReduxProvider } from 'react-redux';
+import { router } from '@/routes/routes.ts';
+import { Toaster } from '@/components/ui/sonner';
+import { store } from '@/redux/store';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<div className="p-8 text-center">Welcome to Mini ERP</div>} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </StrictMode>,
-)
+    <ReduxProvider store={store}>
+      <Toaster />
+      <RouterProvider router={router} />
+    </ReduxProvider>
+  </StrictMode>
+);
