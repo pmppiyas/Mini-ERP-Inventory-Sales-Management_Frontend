@@ -1,14 +1,5 @@
 import AdminHome from '@/modules/dashboard/admin/AdminHome';
-import {
-  LayoutDashboard,
-  Package,
-  ShoppingCart,
-  Users,
-  ChartColumn,
-  Settings,
-  Boxes,
-  ClipboardList,
-} from 'lucide-react';
+import { LayoutDashboard } from 'lucide-react';
 
 export const adminNavItems = [
   {
