@@ -14,7 +14,15 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['AUTH'],
     }),
+
+    getMe: builder.query({
+      query: () => ({
+        url: '/auth/getme',
+        method: 'GET',
+      }),
+      providesTags: ['AUTH', 'USER'],
+    }),
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useGetMeQuery } = authApi;

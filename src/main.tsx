@@ -6,12 +6,15 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { router } from '@/routes/routes.ts';
 import { Toaster } from '@/components/ui/sonner';
 import { store } from '@/redux/store';
+import { AuthProvider } from '@/provider/auth.provider';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ReduxProvider store={store}>
-      <Toaster />
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <Toaster />
+        <RouterProvider router={router} />
+      </AuthProvider>
     </ReduxProvider>
   </StrictMode>
 );
