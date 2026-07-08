@@ -1,10 +1,10 @@
 import { useSearchParams } from 'react-router-dom';
-
 import ProductContent from '@/modules/dashboard/admin/product/ProductContent';
 import ErrorState from '@/modules/shared/ErrorState';
 import PaginationComponent from '@/modules/shared/Navigaton';
 import ProductPageSkeleton from '@/modules/skeleton/ProductPageSkeleton';
 import { useGetProductsQuery } from '@/redux/features/product/product.api';
+import NotFoundData from '@/modules/shared/NotFoundData';
 
 const ProductPageWrapper = () => {
   const [searchParams] = useSearchParams();
@@ -31,14 +31,19 @@ const ProductPageWrapper = () => {
   if (error) return <ErrorState />;
 
   return (
-    <>
-      <ProductContent products={products || []} />
-
-      <PaginationComponent
-        currentPage={meta?.page ?? 1}
-        totalPages={meta?.totalPage ?? 1}
-      />
-    </>
+    <div>
+      {products?.length && products.length > 0 ? (
+        <div>
+          <ProductContent products={products} />
+          <PaginationComponent
+            currentPage={meta?.page ?? 1}
+            totalPages={meta?.totalPage ?? 1}
+          />
+        </div>
+      ) : (
+        <NotFoundData />
+      )}
+    </div>
   );
 };
 

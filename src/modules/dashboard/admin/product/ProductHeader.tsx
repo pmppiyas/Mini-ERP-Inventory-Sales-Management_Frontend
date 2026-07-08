@@ -1,6 +1,6 @@
 import CategoryFilter from '@/modules/shared/CategoryFilter';
 import ReusableHeader from '@/modules/shared/ReusableHeader';
-import { Package, Plus, Boxes, AlertTriangle } from 'lucide-react';
+import { Package, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const ProductHeader = () => {

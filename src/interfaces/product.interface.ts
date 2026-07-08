@@ -1,3 +1,5 @@
+import type { ICategory } from '@/interfaces/category.interface';
+
 export interface ProductQueryParams {
   page?: number;
   limit?: number;
@@ -10,11 +12,11 @@ export interface IProduct {
   _id: string;
   productName: string;
   sku: string;
-  category: string;
+  category: ICategory;
   purchasePrice: number;
   sellingPrice: number;
   stockQuantity: number;
-  productImage: string;
+  photoUrl: string;
 
   createdAt: string;
   updatedAt: string;

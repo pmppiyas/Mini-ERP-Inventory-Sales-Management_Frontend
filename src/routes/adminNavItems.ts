@@ -1,5 +1,6 @@
 import AdminHome from '@/modules/dashboard/admin/AdminHome';
 import ProductPage from '@/modules/dashboard/admin/product/ProductPage';
+import ProductDetailsPage from '@/modules/shared/product/ProductDetailsPage';
 import { LayoutDashboard, Package } from 'lucide-react';
 
 export const adminNavItems = [
@@ -20,67 +21,14 @@ export const adminNavItems = [
         icon: Package,
         component: ProductPage,
       },
-      // {
-      //   id: 'add-product',
-      //   label: 'Add Product',
-      //   path: 'products/create',
-      //   icon: Boxes,
-      //   component: AddProduct,
-      // },
-      // {
-      //   id: 'sales',
-      //   label: 'Sales',
-      //   path: 'sales',
-      //   icon: ShoppingCart,
-      //   component: Sales,
-      // },
-      // {
-      //   id: 'create-sale',
-      //   label: 'Create Sale',
-      //   path: 'sales/create',
-      //   icon: ClipboardList,
-      //   component: CreateSale,
-      // },
     ],
   },
-
-  // {
-  //   section: 'Management',
-  //   items: [
-  //     {
-  //       id: 'users',
-  //       label: 'Users',
-  //       path: 'users',
-  //       icon: Users,
-  //       component: UsersPage,
-  //     },
-  //     {
-  //       id: 'reports',
-  //       label: 'Reports',
-  //       path: 'reports',
-  //       icon: ChartColumn,
-  //       component: Reports,
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   section: 'Settings',
-  //   items: [
-  //     {
-  //       id: 'profile',
-  //       label: 'Profile',
-  //       path: 'profile',
-  //       icon: Users,
-  //       component: Profile,
-  //     },
-  //     {
-  //       id: 'settings',
-  //       label: 'Settings',
-  //       path: 'settings',
-  //       icon: Settings,
-  //       component: AppSettings,
-  //     },
-  //   ],
-  // },
 ];
+
+export const adminExtraRoutes = [
+  {
+    path: 'products/:id',
+    Component: ProductDetailsPage,
+  },
+];
+
