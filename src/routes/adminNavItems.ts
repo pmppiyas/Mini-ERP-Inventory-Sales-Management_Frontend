@@ -1,5 +1,6 @@
 import AdminHome from '@/modules/dashboard/admin/AdminHome';
-import { LayoutDashboard } from 'lucide-react';
+import ProductPage from '@/modules/dashboard/admin/product/ProductPage';
+import { LayoutDashboard, Package } from 'lucide-react';
 
 export const adminNavItems = [
   {
@@ -12,13 +13,13 @@ export const adminNavItems = [
         index: true,
         component: AdminHome,
       },
-      // {
-      //   id: 'products',
-      //   label: 'Products',
-      //   path: 'products',
-      //   icon: Package,
-      //   component: Products,
-      // },
+      {
+        id: 'products',
+        label: 'Products',
+        path: 'products',
+        icon: Package,
+        component: ProductPage,
+      },
       // {
       //   id: 'add-product',
       //   label: 'Add Product',

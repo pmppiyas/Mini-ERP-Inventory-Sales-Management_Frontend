@@ -102,7 +102,7 @@ const DashboardLayoutContent = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-muted/30">
+    <div className="container max-w-360 mx-auto min-h-[calc(100vh-70px)] flex h-screen overflow-hidden bg-muted/30">
       {/* ── Sidebar ── */}
       <aside
         className={`
@@ -114,7 +114,7 @@ const DashboardLayoutContent = () => {
         `}
       >
         {/* Logo */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+        <div className="flex items-center justify-between px-5 py-2.5 border-b border-border">
           <Link to="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
               <span className="text-primary-foreground font-bold text-sm">
@@ -213,8 +213,6 @@ const DashboardLayoutContent = () => {
 
             {/* Breadcrumb */}
             <div className="hidden sm:flex items-center gap-1.5 text-sm">
-              <span className="text-muted-foreground">Admin</span>
-              <ChevronRight className="h-3.5 w-3.5 text-border" />
               <span className="text-foreground font-medium capitalize">
                 {location.pathname.split('/').pop() || 'Dashboard'}
               </span>
@@ -226,7 +224,7 @@ const DashboardLayoutContent = () => {
             {/* Notification */}
             <button className="relative h-8 w-8 rounded-lg flex items-center justify-center text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
               <Bell className="h-4 w-4" />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-destructive rounded-full" />
+              {/* <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-destructive rounded-full" /> */}
             </button>
 
             {/* Avatar */}
