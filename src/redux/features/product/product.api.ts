@@ -33,7 +33,21 @@ export const productApi = baseApi.injectEndpoints({
       },
       providesTags: (_result, _err, id) => [{ type: 'PRODUCT', id }],
     }),
+
+    addProduct: builder.mutation<IProduct, FormData>({
+      query: (formData) => ({
+        url: '/product/add',
+        method: 'POST',
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }),
+      invalidatesTags: ['PRODUCT'],
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductByIdQuery } = productApi;
+export const {
+  useGetProductsQuery,
+  useGetProductByIdQuery,
+  useAddProductMutation,
+} = productApi;

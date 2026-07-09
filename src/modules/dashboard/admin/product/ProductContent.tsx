@@ -1,7 +1,7 @@
 import type { IProduct } from '@/interfaces/product.interface';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
-import { Package, Tag, TrendingUp, Layers, ArrowRight } from 'lucide-react';
+import { Tag, Layers, ArrowRight } from 'lucide-react';
 
 const ProductContent = ({ products }: { products: IProduct[] }) => {
   return (
@@ -16,7 +16,7 @@ const ProductContent = ({ products }: { products: IProduct[] }) => {
           <div className="relative overflow-hidden rounded-t-xl bg-muted h-48">
             <img
               src={product.photoUrl}
-              alt={product.productName}
+              alt={product.name}
               className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
             {/* Stock badge */}
@@ -36,7 +36,7 @@ const ProductContent = ({ products }: { products: IProduct[] }) => {
           <div className="p-4 space-y-3">
             <div>
               <h2 className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors">
-                {product.productName}
+                {product.name}
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">
                 SKU: {product.sku}

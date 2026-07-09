@@ -116,7 +116,7 @@ const ProductDetailsPage = () => {
           <div className="relative bg-muted h-72 lg:h-full min-h-64">
             <img
               src={product.photoUrl}
-              alt={product.productName}
+              alt={product.name}
               className="w-full h-full object-cover"
             />
             {/* Stock status overlay */}
@@ -141,7 +141,7 @@ const ProductDetailsPage = () => {
           {/* Product name + category */}
           <div>
             <h2 className="text-xl font-bold text-foreground">
-              {product.productName}
+              {product.name}
             </h2>
             <div className="flex items-center gap-2 mt-2">
               <Tag className="h-3.5 w-3.5 text-muted-foreground" />
@@ -160,14 +160,17 @@ const ProductDetailsPage = () => {
                   key={stat.label}
                   className="rounded-xl border border-border bg-muted/30 p-3 space-y-2"
                 >
-                  <div
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center ${stat.color}`}
-                  >
-                    <Icon className="h-4 w-4" />
+                  <div className="flex items-center gap-2 ">
+                    <div
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center ${stat.color}`}
+                    >
+                      <Icon className="h-4 w-4" />
+                    </div>
+                    <p className="text-xs text-muted-foreground text-center">
+                      {stat.label}
+                    </p>
                   </div>
-                  <p className="text-[11px] text-muted-foreground">
-                    {stat.label}
-                  </p>
+
                   <p className="text-sm font-semibold text-foreground">
                     {stat.value}
                   </p>

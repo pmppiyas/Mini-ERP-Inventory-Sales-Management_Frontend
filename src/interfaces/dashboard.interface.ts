@@ -5,8 +5,9 @@ export interface ISidebarItem {
     label: string;
     path?: string;
     icon: React.ComponentType;
-    component: React.ComponentType;
+    component?: React.ComponentType;
     index?: boolean;
     badge?: string;
+    noRoute?: boolean;
   }>;
 }

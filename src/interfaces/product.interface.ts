@@ -10,7 +10,7 @@ export interface ProductQueryParams {
 
 export interface IProduct {
   _id: string;
-  productName: string;
+  name: string;
   sku: string;
   category: ICategory;
   purchasePrice: number;
