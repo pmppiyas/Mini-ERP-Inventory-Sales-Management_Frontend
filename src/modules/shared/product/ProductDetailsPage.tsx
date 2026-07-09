@@ -1,7 +1,13 @@
-import { useGetProductByIdQuery } from '@/redux/features/product/product.api';
+import {
+  useGetProductByIdQuery,
+  useDeleteProductMutation,
+} from '@/redux/features/product/product.api';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import ConfirmModal from '@/modules/shared/ConfirmModal';
+import { toast } from 'sonner';
+import { useState } from 'react';
 import {
   ArrowLeft,
   Package,
@@ -14,14 +20,27 @@ import {
   CheckCircle2,
   Plus,
   Minus,
+  Trash2,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { data: product, isLoading, error } = useGetProductByIdQuery(id!);
+  const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
+
+  const handleDelete = async () => {
+    try {
+      await deleteProduct(id!).unwrap();
+      toast.success('Product deleted successfully!');
+      navigate('/admin/products');
+    } catch {
+      toast.error('Failed to delete product. Please try again.');
+    }
+  };
 
   if (isLoading) {
     return (
@@ -249,16 +268,30 @@ const ProductDetailsPage = () => {
               Edit Product
             </Button>
             <Button
-              className="flex-1"
               variant="outline"
-              onClick={() => navigate(-1)}
+              className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/30"
+              onClick={() => setShowDeleteModal(true)}
             >
+              <Trash2 className="h-4 w-4 mr-1.5" />
               Delete
             </Button>
             <Button variant="outline" onClick={() => navigate(-1)}>
               Back
             </Button>
           </div>
+
+          {/* Confirm Delete Modal */}
+          <ConfirmModal
+            open={showDeleteModal}
+            onClose={() => setShowDeleteModal(false)}
+            onConfirm={handleDelete}
+            isLoading={isDeleting}
+            title="Delete Product?"
+            description={`"${product?.name}" will be permanently deleted. This action cannot be undone.`}
+            confirmLabel="Yes, Delete"
+            cancelLabel="Cancel"
+            variant="danger"
+          />
         </div>
       </div>
     </div>
