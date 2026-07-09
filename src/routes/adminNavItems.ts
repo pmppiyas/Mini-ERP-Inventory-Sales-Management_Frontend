@@ -1,6 +1,7 @@
 import AdminHome from '@/modules/dashboard/admin/AdminHome';
 import ProductPage from '@/modules/dashboard/admin/product/ProductPage';
 import AddProductPage from '@/modules/dashboard/admin/product/AddProductPage';
+import EditProductPage from '@/modules/dashboard/admin/product/EditProductPage';
 import ProductDetailsPage from '@/modules/shared/product/ProductDetailsPage';
 import { LayoutDashboard, Package } from 'lucide-react';
 
@@ -44,6 +45,10 @@ export const adminExtraRoutes = [
   {
     path: 'products/create',
     Component: AddProductPage,
+  },
+  {
+    path: 'products/:id/edit',
+    Component: EditProductPage,
   },
   {
     path: 'products/:id',

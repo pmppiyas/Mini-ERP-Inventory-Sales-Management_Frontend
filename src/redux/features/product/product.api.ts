@@ -39,7 +39,6 @@ export const productApi = baseApi.injectEndpoints({
         url: '/product/add',
         method: 'POST',
         data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' },
       }),
       invalidatesTags: ['PRODUCT'],
     }),
@@ -51,6 +50,21 @@ export const productApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['PRODUCT'],
     }),
+
+    updateProduct: builder.mutation<
+      IProduct,
+      { id: string; formData: FormData }
+    >({
+      query: ({ id, formData }) => ({
+        url: `/product/${id}`,
+        method: 'PATCH',
+        data: formData,
+      }),
+      invalidatesTags: (_result, _err, { id }) => [
+        'PRODUCT',
+        { type: 'PRODUCT', id },
+      ],
+    }),
   }),
 });
 
@@ -59,4 +73,5 @@ export const {
   useGetProductByIdQuery,
   useAddProductMutation,
   useDeleteProductMutation,
+  useUpdateProductMutation,
 } = productApi;

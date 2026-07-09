@@ -3,7 +3,7 @@ import type { ISidebarItem } from '@/interfaces/dashboard.interface';
 export const generateRoutes = (sidebarItems: ISidebarItem[]) => {
   return sidebarItems.flatMap((section) =>
     section.items
-      .filter((route) => !route.noRoute) // skip sidebar-only links
+      .filter((route) => !route.noRoute)
       .map((route) => {
         if (route.index) {
           return {
