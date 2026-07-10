@@ -3,7 +3,8 @@ import ProductPage from '@/modules/dashboard/admin/product/ProductPage';
 import AddProductPage from '@/modules/dashboard/admin/product/AddProductPage';
 import EditProductPage from '@/modules/dashboard/admin/product/EditProductPage';
 import ProductDetailsPage from '@/modules/shared/product/ProductDetailsPage';
-import { LayoutDashboard, Package } from 'lucide-react';
+import { LayoutDashboard, Package, Users } from 'lucide-react';
+import AllUserWrapper from '@/modules/dashboard/admin/user/all/AllUserWrapper';
 
 export const adminNavItems = [
   {
@@ -36,6 +37,19 @@ export const adminNavItems = [
         icon: Package,
         component: AddProductPage,
         noRoute: true,
+      },
+    ],
+  },
+
+  {
+    section: 'Users',
+    items: [
+      {
+        id: 'users',
+        label: 'All Users',
+        path: 'users',
+        icon: Users,
+        component: AllUserWrapper,
       },
     ],
   },

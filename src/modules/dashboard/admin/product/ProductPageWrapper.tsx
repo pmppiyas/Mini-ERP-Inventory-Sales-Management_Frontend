@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import ProductContent from '@/modules/dashboard/admin/product/ProductContent';
 import ErrorState from '@/modules/shared/ErrorState';
-import PaginationComponent from '@/modules/shared/Navigaton';
+import PaginationComponent from '@/modules/shared/Pagination';
 import ProductPageSkeleton from '@/modules/skeleton/ProductPageSkeleton';
 import { useGetProductsQuery } from '@/redux/features/product/product.api';
 import NotFoundData from '@/modules/shared/NotFoundData';

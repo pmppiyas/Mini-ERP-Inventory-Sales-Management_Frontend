@@ -57,7 +57,7 @@ export const productApi = baseApi.injectEndpoints({
     >({
       query: ({ id, formData }) => ({
         url: `/product/${id}`,
-        method: 'PATCH',
+        method: 'PUT',
         data: formData,
       }),
       invalidatesTags: (_result, _err, { id }) => [
