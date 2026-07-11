@@ -115,20 +115,15 @@ const DashboardLayoutContent = () => {
       >
         {/* Logo */}
         <div className="flex items-center justify-between px-5 py-2.5 border-b border-border">
-          <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
-              <span className="text-primary-foreground font-bold text-sm">
+          <Link to="/" className="flex items-center gap-2 shrink-0">
+            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-xs">
                 M
               </span>
             </div>
-            <div className="flex flex-col items-start">
-              <p className="text-foreground font-bold text-sm leading-none">
-                Mini ERP
-              </p>
-              <p className="text-muted-foreground text-[10px] mt-0.5">
-                Management Suite
-              </p>
-            </div>
+            <span className="font-bold text-foreground text-base">
+              Mini ERP
+            </span>
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}

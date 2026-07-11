@@ -6,6 +6,22 @@ export const Role = {
 
 export type TRole = 'ADMIN' | 'MANAGER' | 'EMPLOYEE';
 
+export const TPermission = {
+  PERMISSION_GIVER: 'PERMISSION_GIVER',
+
+  ADD_PRODUCT: 'ADD_PRODUCT',
+  UPDATE_PRODUCT: 'UPDATE_PRODUCT',
+  DELETE_PRODUCT: 'DELETE_PRODUCT',
+  VIEW_PRODUCT: 'VIEW_PRODUCT',
+
+  ADD_USER: 'ADD_USER',
+  UPDATE_USER: 'UPDATE_USER',
+  DELETE_USER: 'DELETE_USER',
+  VIEW_USER: 'VIEW_USER',
+} as const;
+
+export type TPermission = (typeof TPermission)[keyof typeof TPermission];
+
 export interface IUser {
   _id: string;
   name: string;
@@ -14,6 +30,7 @@ export interface IUser {
   photoUrl?: string;
   phone?: string;
   status: boolean;
+  permissions: TPermission[];
   createdAt: string;
   updatedAt: string;
 }

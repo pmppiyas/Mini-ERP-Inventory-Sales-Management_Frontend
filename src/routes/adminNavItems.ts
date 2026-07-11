@@ -1,10 +1,11 @@
-import AdminHome from '@/modules/dashboard/admin/AdminHome';
 import ProductPage from '@/modules/dashboard/admin/product/ProductPage';
 import AddProductPage from '@/modules/dashboard/admin/product/AddProductPage';
 import EditProductPage from '@/modules/dashboard/admin/product/EditProductPage';
 import ProductDetailsPage from '@/modules/shared/product/ProductDetailsPage';
 import { LayoutDashboard, Package, Users } from 'lucide-react';
 import AllUserWrapper from '@/modules/dashboard/admin/user/all/AllUserWrapper';
+import AdminMainPage from '@/modules/dashboard/admin/main/AdminMainPage';
+import UserDetailsPage from '@/modules/shared/user/UserDetailsPage';
 
 export const adminNavItems = [
   {
@@ -15,7 +16,7 @@ export const adminNavItems = [
         label: 'Dashboard',
         icon: LayoutDashboard,
         index: true,
-        component: AdminHome,
+        component: AdminMainPage,
       },
     ],
   },
@@ -67,5 +68,9 @@ export const adminExtraRoutes = [
   {
     path: 'products/:id',
     Component: ProductDetailsPage,
+  },
+  {
+    path: 'user/:id',
+    Component: UserDetailsPage,
   },
 ];
