@@ -61,21 +61,10 @@ const UserDetailsPage = () => {
       label: 'Status',
       value: user.status,
       icon: CheckCircle2,
-      color: user.status
-        ? 'text-green-500 bg-green-500/10'
-        : 'text-destructive bg-destructive/10',
-    },
-    {
-      label: 'Permissions',
-      value: user.permissions.length,
-      icon: Shield,
-      color: 'text-primary bg-primary/10',
-    },
-    {
-      label: 'Number',
-      value: user.phone ?? 'N/A',
-      icon: Phone,
-      color: 'text-purple-500 bg-purple-500/10',
+      color:
+        user.status === 'ACTIVE'
+          ? 'text-green-500 bg-green-500/10'
+          : 'text-destructive bg-destructive/10',
     },
   ];
 
@@ -163,6 +152,30 @@ const UserDetailsPage = () => {
                 </div>
               );
             })}
+            {/* Permissions */}
+            <div className="rounded-xl border bg-muted/30 p-4 space-y-3 col-span-2">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Shield className="h-4 w-4" />
+                <span className="text-sm font-medium">Permissions</span>
+              </div>
+
+              {user.permissions.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {user.permissions.map((permission: string) => (
+                    <Badge key={permission} variant="secondary">
+                      {permission
+                        .replace(/_/g, ' ')
+                        .toLowerCase()
+                        .replace(/\b\w/g, (char) => char.toUpperCase())}
+                    </Badge>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  No permissions assigned
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Details */}
@@ -178,13 +191,21 @@ const UserDetailsPage = () => {
 
             <div className="flex justify-between text-sm">
               <div className="flex items-center gap-2 text-muted-foreground">
+                <Phone className="h-4 w-4" />
+                Number
+              </div>
+
+              <span className="font-medium">{user.phone ?? 'N/A'}</span>
+            </div>
+
+            <div className="flex justify-between text-sm">
+              <div className="flex items-center gap-2 text-muted-foreground">
                 <Mail className="h-4 w-4" />
                 Email
               </div>
 
               <span className="font-medium">{user.email}</span>
             </div>
-
             <div className="flex justify-between text-sm">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Calendar className="h-4 w-4" />
@@ -195,7 +216,6 @@ const UserDetailsPage = () => {
                 {new Date(user.createdAt).toLocaleDateString()}
               </span>
             </div>
-
             <div className="flex justify-between text-sm">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Calendar className="h-4 w-4" />

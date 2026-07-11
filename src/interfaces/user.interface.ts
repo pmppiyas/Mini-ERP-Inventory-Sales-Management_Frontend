@@ -22,6 +22,14 @@ export const TPermission = {
 
 export type TPermission = (typeof TPermission)[keyof typeof TPermission];
 
+export const Status = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  BLOCK: 'BLOCK',
+} as const;
+
+export type IStatus = (typeof Status)[keyof typeof Status];
+
 export interface IUser {
   _id: string;
   name: string;
@@ -29,7 +37,7 @@ export interface IUser {
   role: TRole;
   photoUrl?: string;
   phone?: string;
-  status: boolean;
+  status: IStatus;
   permissions: TPermission[];
   createdAt: string;
   updatedAt: string;
