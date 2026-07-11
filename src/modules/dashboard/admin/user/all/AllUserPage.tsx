@@ -148,7 +148,7 @@ const AllUserPage = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-44">
             <DropdownMenuItem
-              onClick={() => navigate(`/admin/users/${row._id}`)}
+              onClick={() => navigate(`/admin/user/${row._id}`)}
               className="gap-2 cursor-pointer"
             >
               <Eye className="h-3.5 w-3.5" /> View
@@ -175,13 +175,11 @@ const AllUserPage = ({
   return (
     <div>
       {/* ── Table ── */}
-      <DataTable<IUser>
+      <DataTable
         columns={columns}
-        data={users ?? []}
+        data={users}
         keyField="_id"
-        isLoading={isLoading}
-        emptyMessage="No users found. Try adjusting the filters."
-        skeletonRows={10}
+        onRowClick={(user) => navigate(`/admin/user/${user._id}`)}
       />
 
       {/* ── Delete Modal ── */}

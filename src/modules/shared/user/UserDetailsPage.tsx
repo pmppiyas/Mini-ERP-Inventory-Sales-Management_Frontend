@@ -12,13 +12,31 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetUserByIdQuery } from '@/redux/features/user/user.api';
+import {
+  useDeleteUserMutation,
+  useGetUserByIdQuery,
+} from '@/redux/features/user/user.api';
+import { toast } from 'sonner';
+import { useState } from 'react';
+import ConfirmModal from '@/modules/shared/ConfirmModal';
 
 const UserDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { data: user, isLoading, error } = useGetUserByIdQuery(id!);
+  const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
+
+  const handleDelete = async () => {
+    try {
+      await deleteUser(id!).unwrap();
+      toast.success('Product deleted successfully!');
+      navigate('/admin/users');
+    } catch {
+      toast.error('Failed to delete product. Please try again.');
+    }
+  };
 
   if (isLoading) {
     return (
@@ -89,8 +107,8 @@ const UserDetailsPage = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Profile Card */}
-        <div className="rounded-xl border border-border bg-card overflow-hidden">
-          <div className="relative bg-muted h-auto flex items-center justify-center">
+        <div className="rounded-xl border border-border bg-card overflow-hidden h-full ">
+          <div className="relative bg-muted h-full flex items-center justify-center ">
             {user.photoUrl ? (
               <img
                 src={user.photoUrl}
@@ -239,9 +257,10 @@ const UserDetailsPage = () => {
 
             <Button
               variant="outline"
-              className="text-destructive border-destructive/30 hover:bg-destructive/10"
+              className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/30"
+              onClick={() => setShowDeleteModal(true)}
             >
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 className="h-4 w-4 mr-1.5" />
               Delete
             </Button>
 
@@ -249,6 +268,19 @@ const UserDetailsPage = () => {
               Back
             </Button>
           </div>
+
+          {/* Confirm Delete Modal */}
+          <ConfirmModal
+            open={showDeleteModal}
+            onClose={() => setShowDeleteModal(false)}
+            onConfirm={handleDelete}
+            isLoading={isDeleting}
+            title="Delete Product?"
+            description={`"${user?.name}" will be permanently deleted. This action cannot be undone.`}
+            confirmLabel="Yes, Delete"
+            cancelLabel="Cancel"
+            variant="danger"
+          />
         </div>
       </div>
     </div>

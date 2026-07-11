@@ -16,13 +16,14 @@ interface DataTableProps<T> {
   isLoading?: boolean;
   emptyMessage?: string;
   skeletonRows?: number;
+  onRowClick?: (row: T) => void;
 }
 
 const SkeletonRow = ({ cols }: { cols: number }) => (
   <tr className="border-b border-border">
     {Array.from({ length: cols }).map((_, i) => (
       <td key={i} className="px-4 py-3">
-        <div className="h-4 rounded-md bg-muted animate-pulse" />
+        <div className="h-4 animate-pulse rounded-md bg-muted" />
       </td>
     ))}
   </tr>
@@ -35,12 +36,13 @@ function DataTable<T>({
   isLoading = false,
   emptyMessage = 'No data found.',
   skeletonRows = 6,
+  onRowClick,
 }: DataTableProps<T>) {
   return (
-    <div className="rounded-xl border border-border bg-card overflow-hidden">
+    <div className="overflow-hidden rounded-xl border border-border bg-card">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          {/* ── Head ── */}
+          {/* Table Head */}
           <thead>
             <tr className="border-b border-border bg-muted/40">
               {columns.map((col) => (
@@ -48,7 +50,7 @@ function DataTable<T>({
                   key={col.key}
                   style={{ width: col.width }}
                   className={cn(
-                    'px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider whitespace-nowrap',
+                    'px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground whitespace-nowrap',
                     col.align === 'center' && 'text-center',
                     col.align === 'right' && 'text-right',
                     !col.align && 'text-left'
@@ -60,6 +62,7 @@ function DataTable<T>({
             </tr>
           </thead>
 
+          {/* Table Body */}
           <tbody className="divide-y divide-border">
             {isLoading ? (
               Array.from({ length: skeletonRows }).map((_, i) => (
@@ -78,20 +81,26 @@ function DataTable<T>({
               data.map((row, index) => (
                 <tr
                   key={String(row[keyField])}
-                  className="hover:bg-muted/30 transition-colors duration-150"
+                  onClick={() => onRowClick?.(row)}
+                  className={cn(
+                    'transition-colors duration-150',
+                    onRowClick && 'cursor-pointer hover:bg-muted/30'
+                  )}
                 >
                   {columns.map((col) => (
                     <td
                       key={col.key}
                       className={cn(
-                        'px-4 py-3 text-foreground whitespace-nowrap',
+                        'px-4 py-3 whitespace-nowrap text-foreground',
                         col.align === 'center' && 'text-center',
                         col.align === 'right' && 'text-right'
                       )}
                     >
                       {col.render
                         ? col.render(row, index)
-                        : String((row as any)[col.key] ?? '—')}
+                        : String(
+                            (row as Record<string, unknown>)[col.key] ?? '—'
+                          )}
                     </td>
                   ))}
                 </tr>
