@@ -1,5 +1,7 @@
+import UserFormPage from '@/modules/shared/user/UserFormPage';
+
 const AddUserPage = () => {
-  return <div>AddUserPage</div>;
+  return <UserFormPage mode="add" />;
 };
 
 export default AddUserPage;

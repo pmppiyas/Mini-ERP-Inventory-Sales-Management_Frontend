@@ -7,7 +7,7 @@ import ConfirmModal from '@/modules/shared/ConfirmModal';
 import { useDeleteProductMutation } from '@/redux/features/product/product.api';
 import { toast } from 'sonner';
 
-const ProductContent = ({ products }: { products: IProduct[] }) => {
+const AllProductContent = ({ products }: { products: IProduct[] }) => {
   const [deleteTarget, setDeleteTarget] = useState<IProduct | null>(null);
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
 
@@ -130,4 +130,4 @@ const ProductContent = ({ products }: { products: IProduct[] }) => {
   );
 };
 
-export default ProductContent;
+export default AllProductContent;

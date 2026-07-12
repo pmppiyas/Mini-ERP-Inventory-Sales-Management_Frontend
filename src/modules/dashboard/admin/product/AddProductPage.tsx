@@ -1,4 +1,4 @@
-import ProductFormPage from '@/modules/dashboard/admin/product/ProductFormPage';
+import ProductFormPage from '@/modules/shared/product/ProductFormPage';
 
 const AddProductPage = () => <ProductFormPage mode="add" />;
 

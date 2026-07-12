@@ -3,7 +3,7 @@ import { Role } from '@/interfaces/user.interface';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { checkAuth } from '@/middleware/checkAuth';
 import Login from '@/modules/auth/Login';
-import Home from '@/modules/Home/Home';
+import Home from '@/modules/home/Home';
 import { adminExtraRoutes, adminNavItems } from '@/routes/adminNavItems';
 import { generateRoutes } from '@/utils/generateRoutes';
 import { createBrowserRouter } from 'react-router-dom';

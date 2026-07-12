@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetProductByIdQuery } from '@/redux/features/product/product.api';
-import ProductFormPage from '@/modules/dashboard/admin/product/ProductFormPage';
+import ProductFormPage from '@/modules/shared/product/ProductFormPage';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
 

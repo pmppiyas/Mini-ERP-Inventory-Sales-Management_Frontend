@@ -1,9 +1,9 @@
-import ProductHeader from '@/modules/dashboard/admin/product/ProductHeader';
-import ProductPageWrapper from '@/modules/dashboard/admin/product/ProductPageWrapper';
+import ProductHeader from '@/modules/dashboard/admin/product/all/AllProductHeader';
+import ProductPageWrapper from '@/modules/dashboard/admin/product/all/AllProductWrapper';
 import ProductPageSkeleton from '@/modules/skeleton/ProductPageSkeleton';
 import { Suspense } from 'react';
 
-const ProductPage = () => {
+const AllProductPage = () => {
   return (
     <div>
       <ProductHeader />
@@ -14,4 +14,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default AllProductPage;

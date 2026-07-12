@@ -22,7 +22,7 @@ export interface IProduct {
   updatedAt: string;
 }
 
-export interface IMeta {
+export interface IProductMeta {
   page: number;
   limit: number;
   total: number;
@@ -35,5 +35,5 @@ export interface IProductResponse {
 
 export interface IProductsResult {
   products: IProduct[];
-  meta: IMeta;
+  meta: IProductMeta;
 }

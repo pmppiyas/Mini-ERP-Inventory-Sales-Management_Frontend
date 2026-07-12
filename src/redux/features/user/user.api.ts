@@ -4,11 +4,35 @@ import type {
   IUsersResponse,
   IUsersResult,
   IUserResponse,
+  IAddUserPayload,
 } from '@/interfaces/user.interface';
 import { baseApi } from '@/redux/baseApi';
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    addUser: builder.mutation<IUser, IAddUserPayload>({
+      query: (data) => ({
+        url: '/user/register',
+        method: 'POST',
+        data,
+      }),
+      transformResponse: (response: IUserResponse) => response.data,
+      invalidatesTags: ['USER'],
+    }),
+
+    updateUser: builder.mutation<IUser, { id: string; data: FormData }>({
+      query: ({ id, data }) => ({
+        url: `/user/${id}`,
+        method: 'PATCH',
+        data,
+      }),
+      transformResponse: (response: IUserResponse) => response.data,
+      invalidatesTags: (_result, _error, { id }) => [
+        'USER',
+        { type: 'USER', id },
+      ],
+    }),
+
     getUsers: builder.query<IUsersResult, IUserQueryParams>({
       query: (params) => ({
         url: '/user',
@@ -42,6 +66,8 @@ export const userApi = baseApi.injectEndpoints({
 });
 
 export const {
+  useAddUserMutation,
+  useUpdateUserMutation,
   useGetUsersQuery,
   useGetUserByIdQuery,
   useUpdateUserRoleMutation,

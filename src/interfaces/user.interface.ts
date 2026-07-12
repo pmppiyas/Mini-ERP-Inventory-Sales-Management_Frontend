@@ -43,6 +43,19 @@ export interface IUser {
   updatedAt: string;
 }
 
+export interface IAddUserPayload {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  role: string;
+  status?: string;
+  permissions?: string[];
+  photoUrl?: string;
+}
+
+
+
 export interface IUserQueryParams {
   page?: number;
   limit?: number;

@@ -1,6 +1,6 @@
 import type { IUserMeta } from '@/interfaces/user.interface';
-import AllUserHeader from '@/modules/dashboard/admin/user/all/AllUserHeader';
-import AllUserPage from '@/modules/dashboard/admin/user/all/AllUserPage';
+import AllUserContent from '@/modules/dashboard/admin/user/all/AllUserContent';
+import NotFoundData from '@/modules/shared/NotFoundData';
 import PaginationComponent from '@/modules/shared/Pagination';
 import { useGetUsersQuery } from '@/redux/features/user/user.api';
 import { useSearchParams } from 'react-router-dom';
@@ -12,7 +12,7 @@ const AllUserWrapper = () => {
   const limit = Number(searchParams.get('limit')) || 10;
   const role = searchParams.get('role') || undefined;
 
-  const { data, isLoading } = useGetUsersQuery({
+  const { data } = useGetUsersQuery({
     page,
     limit,
     role,
@@ -26,13 +26,18 @@ const AllUserWrapper = () => {
 
   return (
     <div>
-      <AllUserHeader />
-      <AllUserPage users={users} isLoading={isLoading} />
-      {users.length === meta.limit && (
-        <PaginationComponent
-          currentPage={meta.page}
-          totalPages={meta.totalPage}
-        />
+      {users?.length && users.length > 0 ? (
+        <div>
+          <AllUserContent users={users} />
+          {users.length === meta.limit && (
+            <PaginationComponent
+              currentPage={meta.page}
+              totalPages={meta.totalPage}
+            />
+          )}
+        </div>
+      ) : (
+        <NotFoundData />
       )}
     </div>
   );

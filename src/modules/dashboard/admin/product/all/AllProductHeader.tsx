@@ -3,7 +3,7 @@ import ReusableHeader from '@/modules/shared/ReusableHeader';
 import { Package, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const ProductHeader = () => {
+const AllProductHeader = () => {
   const navigate = useNavigate();
 
   return (
@@ -36,4 +36,4 @@ const ProductHeader = () => {
   );
 };
 
-export default ProductHeader;
+export default AllProductHeader;
