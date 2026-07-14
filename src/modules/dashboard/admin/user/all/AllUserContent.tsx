@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { useDeleteUserMutation } from '@/redux/features/user/user.api';
 
 import DataTable, { type ColumnDef } from '@/components/shared/DataTable';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,8 +13,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal, Eye, Pencil, Trash2, UserCircle2 } from 'lucide-react';
-import type { IUser } from '@/interfaces/user.interface';
+import {
+  MoreHorizontal,
+  Eye,
+  Pencil,
+  Trash2,
+  UserCircle2,
+  ShieldCheck,
+} from 'lucide-react';
+import { type IUser, Status } from '@/interfaces/user.interface';
 import ConfirmModal from '@/modules/shared/ConfirmModal';
 
 const roleBadge: Record<string, string> = {
@@ -22,7 +30,12 @@ const roleBadge: Record<string, string> = {
   EMPLOYEE: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
 };
 
-const AllUserContent = ({ users }: { users: IUser[] }) => {
+interface AllUserContentProps {
+  users: IUser[];
+  isLoading?: boolean;
+}
+
+const AllUserContent = ({ users, isLoading = false }: AllUserContentProps) => {
   const navigate = useNavigate();
 
   const [deleteTarget, setDeleteTarget] = useState<IUser | null>(null);
@@ -58,6 +71,7 @@ const AllUserContent = ({ users }: { users: IUser[] }) => {
           </div>
         ),
     },
+
     {
       key: 'name',
       header: 'Name',
@@ -68,10 +82,22 @@ const AllUserContent = ({ users }: { users: IUser[] }) => {
         </div>
       ),
     },
+
+    {
+      key: 'phone',
+      header: 'Phone',
+      width: '130px',
+      render: (row) => (
+        <span className="text-xs text-muted-foreground">
+          {row.phone ?? '—'}
+        </span>
+      ),
+    },
+
     {
       key: 'role',
       header: 'Role',
-      width: '120px',
+      width: '110px',
       render: (row) => (
         <Badge
           variant="outline"
@@ -81,39 +107,40 @@ const AllUserContent = ({ users }: { users: IUser[] }) => {
         </Badge>
       ),
     },
-    {
-      key: 'phone',
-      header: 'Phone',
-      width: '150px',
-      render: (row) => (
-        <Badge
-          variant="outline"
-          className={`text-[10px] font-semibold px-2 py-0.5 `}
-        >
-          {row.phone}
-        </Badge>
-      ),
-    },
+
     {
       key: 'status',
       header: 'Status',
       width: '90px',
       align: 'center',
-      render: (row) => (
-        <span
-          className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full border ${
-            row.status
-              ? 'bg-green-500/10 text-green-600 border-green-500/20'
-              : 'bg-muted text-muted-foreground border-border'
-          }`}
-        >
+      render: (row) => {
+        const isActive = row.status === Status.ACTIVE;
+        const isBlocked = row.status === Status.BLOCK;
+        return (
           <span
-            className={`w-1.5 h-1.5 rounded-full ${row.status ? 'bg-green-500' : 'bg-muted-foreground'}`}
-          />
-          {row.status ? 'Active' : 'Inactive'}
-        </span>
-      ),
+            className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full border ${
+              isActive
+                ? 'bg-green-500/10 text-green-600 border-green-500/20'
+                : isBlocked
+                  ? 'bg-destructive/10 text-destructive border-destructive/20'
+                  : 'bg-muted text-muted-foreground border-border'
+            }`}
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                isActive
+                  ? 'bg-green-500'
+                  : isBlocked
+                    ? 'bg-destructive'
+                    : 'bg-muted-foreground'
+              }`}
+            />
+            {row.status}
+          </span>
+        );
+      },
     },
+
     {
       key: 'createdAt',
       header: 'Joined',
@@ -128,6 +155,8 @@ const AllUserContent = ({ users }: { users: IUser[] }) => {
         </span>
       ),
     },
+
+    /* ── 3-dot Actions ── */
     {
       key: 'actions',
       header: '',
@@ -140,6 +169,7 @@ const AllUserContent = ({ users }: { users: IUser[] }) => {
               <MoreHorizontal className="h-4 w-4" />
             </button>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent align="end" className="w-44">
             <DropdownMenuItem
               onClick={() => navigate(`/admin/user/${row._id}`)}
@@ -147,13 +177,23 @@ const AllUserContent = ({ users }: { users: IUser[] }) => {
             >
               <Eye className="h-3.5 w-3.5" /> View
             </DropdownMenuItem>
+
             <DropdownMenuItem
-              onClick={() => navigate(`/admin/users/${row._id}/edit`)}
+              onClick={() => navigate(`/admin/user/${row._id}/edit`)}
               className="gap-2 cursor-pointer"
             >
               <Pencil className="h-3.5 w-3.5" /> Update
             </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={() => navigate(`/admin/user/${row._id}/permission`)}
+              className="gap-2 cursor-pointer"
+            >
+              <ShieldCheck className="h-3.5 w-3.5" /> Set Permission
+            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
+
             <DropdownMenuItem
               onClick={() => setDeleteTarget(row)}
               className="gap-2 cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
@@ -167,16 +207,17 @@ const AllUserContent = ({ users }: { users: IUser[] }) => {
   ];
 
   return (
-    <div>
-      {/* ── Table ── */}
-      <DataTable
+    <>
+      <DataTable<IUser>
         columns={columns}
         data={users}
         keyField="_id"
-        onRowClick={(user) => navigate(`/admin/user/${user._id}`)}
+        isLoading={isLoading}
+        skeletonRows={10}
+        emptyMessage="No users found."
+        onRowClick={(row) => navigate(`/admin/user/${row._id}`)}
       />
 
-      {/* ── Delete Modal ── */}
       <ConfirmModal
         open={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}
@@ -187,7 +228,7 @@ const AllUserContent = ({ users }: { users: IUser[] }) => {
         confirmLabel="Yes, Delete"
         variant="danger"
       />
-    </div>
+    </>
   );
 };
 

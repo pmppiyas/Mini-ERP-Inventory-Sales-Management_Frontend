@@ -45,6 +45,7 @@ import {
   type AddUserFormValues,
   type UpdateUserFormValues,
 } from '@/validation/addUser.schema';
+import { error_message } from '@/utils/error_message';
 
 interface UserFormPageProps {
   mode: 'add' | 'edit';
@@ -150,12 +151,9 @@ const UserFormPage = ({ mode, user }: UserFormPageProps) => {
         toast.success('User updated successfully!');
       }
       navigate('/admin/users');
-    } catch {
-      toast.error(
-        mode === 'add'
-          ? 'Failed to add user. Please try again.'
-          : 'Failed to update user. Please try again.'
-      );
+    } catch (err) {
+      const errorMessage = error_message(err);
+      toast.error(errorMessage);
     }
   };
 
@@ -269,181 +267,184 @@ const UserFormPage = ({ mode, user }: UserFormPageProps) => {
           </div>
 
           {/* RIGHT — Form Fields */}
-          <div className="rounded-xl border border-border bg-card p-6 space-y-5">
-            {/* Name */}
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2 text-sm">
-                    <UserIcon className="h-3.5 w-3.5 text-muted-foreground" />
-                    Full Name
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. Rahim Uddin" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Email + Phone */}
-            <div className="grid grid-cols-2 gap-3">
+          <div className="rounded-xl border border-border bg-card p-6 space-y-5 flex flex-col justify-between">
+            <div className="flex flex-col space-y-5">
+              {/* Name */}
               <FormField
                 control={form.control}
-                name="email"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center gap-2 text-sm">
-                      <Mail className="h-3.5 w-3.5 text-muted-foreground" />
-                      Email
+                      <UserIcon className="h-3.5 w-3.5 text-muted-foreground" />
+                      Full Name
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="e.g. rahim@example.com"
-                        disabled={mode === 'edit'}
-                        {...field}
-                      />
+                      <Input placeholder="e.g. Rahim Uddin" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Email + Phone */}
+              <div className="grid grid-cols-2 gap-3">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2 text-sm">
+                        <Mail className="h-3.5 w-3.5 text-muted-foreground" />
+                        Email
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="e.g. rahim@example.com"
+                          disabled={mode === 'edit'}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2 text-sm">
+                        <Phone className="h-3.5 w-3.5 text-muted-foreground" />
+                        Phone
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g. 01700000000" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Role */}
               <FormField
                 control={form.control}
-                name="phone"
+                name="role"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center gap-2 text-sm">
-                      <Phone className="h-3.5 w-3.5 text-muted-foreground" />
-                      Phone
+                      <ShieldCheck className="h-3.5 w-3.5 text-muted-foreground" />
+                      Role
                     </FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. 01700000000" {...field} />
-                    </FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select role..." />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {ROLE_OPTIONS.map((role) => (
+                          <SelectItem key={role} value={role}>
+                            {role.charAt(0) + role.slice(1).toLowerCase()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Password + Repeat Password */}
+              <div className="grid grid-cols-2 gap-3">
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2 text-sm">
+                        <KeyRound className="h-3.5 w-3.5 text-muted-foreground" />
+                        {mode === 'add' ? 'Password' : 'New Password'}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder={
+                            mode === 'add'
+                              ? 'Min. 8 characters'
+                              : 'Leave blank to keep current'
+                          }
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="repeatPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2 text-sm">
+                        <KeyRound className="h-3.5 w-3.5 text-muted-foreground" />
+                        Repeat Password
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Re-type password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Permissions */}
+              <FormField
+                control={form.control}
+                name="permissions"
+                render={() => (
+                  <FormItem>
+                    <FormLabel className="text-sm">Permissions</FormLabel>
+                    <div className="grid grid-cols-2 gap-2 rounded-xl border border-border p-3">
+                      {PERMISSION_OPTIONS.map((permission) => {
+                        const checked =
+                          watchedValues.permissions?.includes(permission) ??
+                          false;
+                        return (
+                          <label
+                            key={permission}
+                            className="flex items-center gap-2 text-xs cursor-pointer"
+                          >
+                            <Checkbox
+                              checked={checked}
+                              onCheckedChange={(value) =>
+                                togglePermission(permission, Boolean(value))
+                              }
+                            />
+                            {permission
+                              .split('-')
+                              .map(
+                                (w) => w.charAt(0).toUpperCase() + w.slice(1)
+                              )
+                              .join(' ')}
+                          </label>
+                        );
+                      })}
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-
-            {/* Role */}
-            <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2 text-sm">
-                    <ShieldCheck className="h-3.5 w-3.5 text-muted-foreground" />
-                    Role
-                  </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select role..." />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {ROLE_OPTIONS.map((role) => (
-                        <SelectItem key={role} value={role}>
-                          {role.charAt(0) + role.slice(1).toLowerCase()}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Password + Repeat Password */}
-            <div className="grid grid-cols-2 gap-3">
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-2 text-sm">
-                      <KeyRound className="h-3.5 w-3.5 text-muted-foreground" />
-                      {mode === 'add' ? 'Password' : 'New Password'}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder={
-                          mode === 'add'
-                            ? 'Min. 8 characters'
-                            : 'Leave blank to keep current'
-                        }
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="repeatPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-2 text-sm">
-                      <KeyRound className="h-3.5 w-3.5 text-muted-foreground" />
-                      Repeat Password
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Re-type password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* Permissions */}
-            <FormField
-              control={form.control}
-              name="permissions"
-              render={() => (
-                <FormItem>
-                  <FormLabel className="text-sm">Permissions</FormLabel>
-                  <div className="grid grid-cols-2 gap-2 rounded-xl border border-border p-3">
-                    {PERMISSION_OPTIONS.map((permission) => {
-                      const checked =
-                        watchedValues.permissions?.includes(permission) ??
-                        false;
-                      return (
-                        <label
-                          key={permission}
-                          className="flex items-center gap-2 text-xs cursor-pointer"
-                        >
-                          <Checkbox
-                            checked={checked}
-                            onCheckedChange={(value) =>
-                              togglePermission(permission, Boolean(value))
-                            }
-                          />
-                          {permission
-                            .split('-')
-                            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                            .join(' ')}
-                        </label>
-                      );
-                    })}
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             {/* Actions */}
             <div className="flex gap-2 pt-1">
               <Button type="submit" className="flex-1" disabled={isLoading}>

@@ -2,11 +2,12 @@ import ProductPage from '@/modules/dashboard/admin/product/all/AllProductPage';
 import AddProductPage from '@/modules/dashboard/admin/product/AddProductPage';
 import EditProductPage from '@/modules/dashboard/admin/product/EditProductPage';
 import ProductDetailsPage from '@/modules/shared/product/ProductDetailsPage';
-import { Component, LayoutDashboard, Package, User, Users } from 'lucide-react';
-import AllUserWrapper from '@/modules/dashboard/admin/user/all/AllUserWrapper';
-import AdminMainPage from '@/modules/dashboard/admin/main/AdminMainPage';
-import UserDetailsPage from '@/modules/shared/user/UserDetailsPage';
+import AllUserPage from '@/modules/dashboard/admin/user/all/AllUserPage';
 import AddUserPage from '@/modules/dashboard/admin/user/AddUserPage';
+import EditUserPage from '@/modules/dashboard/admin/user/EditUserPage';
+import UserDetailsPage from '@/modules/shared/user/UserDetailsPage';
+import AdminMainPage from '@/modules/dashboard/admin/main/AdminMainPage';
+import { LayoutDashboard, Package, User, Users } from 'lucide-react';
 
 export const adminNavItems = [
   {
@@ -38,7 +39,7 @@ export const adminNavItems = [
         path: 'products/create',
         icon: Package,
         component: AddProductPage,
-        noRoute: true,
+        noRoute: true, // registered in adminExtraRoutes
       },
     ],
   },
@@ -51,7 +52,7 @@ export const adminNavItems = [
         label: 'All Users',
         path: 'users',
         icon: Users,
-        component: AllUserWrapper,
+        component: AllUserPage,
       },
       {
         id: 'add_user',
@@ -59,13 +60,14 @@ export const adminNavItems = [
         path: 'user/create',
         icon: User,
         component: AddUserPage,
-        noRoute: true,
+        noRoute: true, // registered in adminExtraRoutes
       },
     ],
   },
 ];
 
 export const adminExtraRoutes = [
+  // Product routes — most specific first
   {
     path: 'products/create',
     Component: AddProductPage,
@@ -78,9 +80,19 @@ export const adminExtraRoutes = [
     path: 'products/:id',
     Component: ProductDetailsPage,
   },
+
+  // User routes — most specific first
   {
     path: 'user/create',
     Component: AddUserPage,
+  },
+  {
+    path: 'user/:id/edit',
+    Component: EditUserPage,
+  },
+  {
+    path: 'user/:id/permission',
+    Component: EditUserPage, // TODO: replace with PermissionPage when built
   },
   {
     path: 'user/:id',

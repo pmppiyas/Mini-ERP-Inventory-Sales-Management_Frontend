@@ -141,116 +141,117 @@ const UserDetailsPage = () => {
         </div>
 
         {/* Info */}
-        <div className="rounded-xl border bg-card p-6 space-y-5">
-          {/* Stats */}
-          <div className="grid grid-cols-2 gap-3">
-            {stats.map((stat) => {
-              const Icon = stat.icon;
+        <div className="rounded-xl border bg-card p-6 space-y-5 flex flex-col justify-between">
+          <div className="space-y-5">
+            {/* Stats */}
+            <div className="grid grid-cols-2 gap-3">
+              {stats.map((stat) => {
+                const Icon = stat.icon;
 
-              return (
-                <div
-                  key={stat.label}
-                  className="rounded-xl border bg-muted/30 p-3 space-y-2"
-                >
-                  <div className="flex items-center gap-2">
-                    <div
-                      className={`h-8 w-8 rounded-lg flex items-center justify-center ${stat.color}`}
-                    >
-                      <Icon className="h-4 w-4" />
+                return (
+                  <div
+                    key={stat.label}
+                    className="rounded-xl border bg-muted/30 p-3 space-y-2"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={`h-8 w-8 rounded-lg flex items-center justify-center ${stat.color}`}
+                      >
+                        <Icon className="h-4 w-4" />
+                      </div>
+
+                      <p className="text-xs text-muted-foreground">
+                        {stat.label}
+                      </p>
                     </div>
 
-                    <p className="text-xs text-muted-foreground">
-                      {stat.label}
+                    <p className="font-semibold text-sm break-all">
+                      {stat.value}
                     </p>
                   </div>
+                );
+              })}
+              {/* Permissions */}
+              <div className="rounded-xl border bg-muted/30 p-4 space-y-3 col-span-2">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Shield className="h-4 w-4" />
+                  <span className="text-sm font-medium">Permissions</span>
+                </div>
 
-                  <p className="font-semibold text-sm break-all">
-                    {stat.value}
+                {user.permissions.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {user.permissions.map((permission: string) => (
+                      <Badge key={permission} variant="secondary">
+                        {permission
+                          .replace(/_/g, ' ')
+                          .toLowerCase()
+                          .replace(/\b\w/g, (char) => char.toUpperCase())}
+                      </Badge>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    No permissions assigned
                   </p>
+                )}
+              </div>
+            </div>
+
+            {/* Details */}
+            <div className="rounded-xl border bg-muted/30 p-4 space-y-4">
+              <div className="flex justify-between text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <User className="h-4 w-4" />
+                  Name
                 </div>
-              );
-            })}
-            {/* Permissions */}
-            <div className="rounded-xl border bg-muted/30 p-4 space-y-3 col-span-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Shield className="h-4 w-4" />
-                <span className="text-sm font-medium">Permissions</span>
+
+                <span className="font-medium">{user.name}</span>
               </div>
 
-              {user.permissions.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {user.permissions.map((permission: string) => (
-                    <Badge key={permission} variant="secondary">
-                      {permission
-                        .replace(/_/g, ' ')
-                        .toLowerCase()
-                        .replace(/\b\w/g, (char) => char.toUpperCase())}
-                    </Badge>
-                  ))}
+              <div className="flex justify-between text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Phone className="h-4 w-4" />
+                  Number
                 </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No permissions assigned
-                </p>
-              )}
+
+                <span className="font-medium">{user.phone ?? 'N/A'}</span>
+              </div>
+
+              <div className="flex justify-between text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Mail className="h-4 w-4" />
+                  Email
+                </div>
+
+                <span className="font-medium">{user.email}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                  Created
+                </div>
+
+                <span className="font-medium">
+                  {new Date(user.createdAt).toLocaleDateString()}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                  Updated
+                </div>
+
+                <span className="font-medium">
+                  {new Date(user.updatedAt).toLocaleDateString()}
+                </span>
+              </div>
             </div>
           </div>
-
-          {/* Details */}
-          <div className="rounded-xl border bg-muted/30 p-4 space-y-4">
-            <div className="flex justify-between text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <User className="h-4 w-4" />
-                Name
-              </div>
-
-              <span className="font-medium">{user.name}</span>
-            </div>
-
-            <div className="flex justify-between text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Phone className="h-4 w-4" />
-                Number
-              </div>
-
-              <span className="font-medium">{user.phone ?? 'N/A'}</span>
-            </div>
-
-            <div className="flex justify-between text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Mail className="h-4 w-4" />
-                Email
-              </div>
-
-              <span className="font-medium">{user.email}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Calendar className="h-4 w-4" />
-                Created
-              </div>
-
-              <span className="font-medium">
-                {new Date(user.createdAt).toLocaleDateString()}
-              </span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Calendar className="h-4 w-4" />
-                Updated
-              </div>
-
-              <span className="font-medium">
-                {new Date(user.updatedAt).toLocaleDateString()}
-              </span>
-            </div>
-          </div>
-
           {/* Actions */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 ">
             <Button
               className="flex-1"
-              onClick={() => navigate(`/admin/users/${id}/edit`)}
+              onClick={() => navigate(`/admin/user/${id}/edit`)}
             >
               Edit User
             </Button>
