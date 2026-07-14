@@ -8,12 +8,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import Logo from '@/modules/shared/Logo';
 
 const navLinks = [
   { title: 'Dashboard', url: '/admin' },
-  { title: 'Products',  url: '/admin/products' },
-  { title: 'Sales',     url: '/admin/sales' },
-  { title: 'Reports',   url: '/admin/reports' },
+  { title: 'Products', url: '/admin/products' },
+  { title: 'Sales', url: '/admin/sales' },
+  { title: 'Reports', url: '/admin/reports' },
 ];
 
 export default function Navbar() {
@@ -23,16 +24,10 @@ export default function Navbar() {
   return (
     <header className="bg-card border-b border-border sticky top-0 z-30">
       <div className="container mx-auto px-5">
-
         {/* Desktop */}
         <nav className="hidden h-14 lg:flex items-center justify-between gap-6">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xs">M</span>
-            </div>
-            <span className="font-bold text-foreground text-base">Mini ERP</span>
-          </Link>
+          <Logo />
 
           {/* Nav Links */}
           <div className="flex items-center gap-1">
@@ -61,12 +56,16 @@ export default function Navbar() {
                   <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-[9px] font-bold">
                     {user.name[0]}
                   </div>
-                  <span className="font-medium text-foreground">{user.name}</span>
+                  <span className="font-medium text-foreground">
+                    {user.name}
+                  </span>
                   <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
                     {user.role}
                   </span>
                 </div>
-                <Button variant="outline" size="sm">Logout</Button>
+                <Button variant="outline" size="sm">
+                  Logout
+                </Button>
               </>
             ) : (
               <>
@@ -85,9 +84,13 @@ export default function Navbar() {
         <div className="flex h-14 items-center justify-between lg:hidden">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xs">M</span>
+              <span className="text-primary-foreground font-bold text-xs">
+                M
+              </span>
             </div>
-            <span className="font-bold text-foreground text-base">Mini ERP</span>
+            <span className="font-bold text-foreground text-base">
+              Mini ERP
+            </span>
           </Link>
 
           <Sheet>
@@ -122,7 +125,9 @@ export default function Navbar() {
 
               <div className="mt-6 pt-6 border-t border-border flex flex-col gap-2">
                 {isLoggedIn ? (
-                  <Button variant="outline" className="w-full">Logout</Button>
+                  <Button variant="outline" className="w-full">
+                    Logout
+                  </Button>
                 ) : (
                   <>
                     <Button asChild variant="outline" className="w-full">
