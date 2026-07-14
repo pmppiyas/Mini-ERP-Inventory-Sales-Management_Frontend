@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import Logo from '@/modules/shared/Logo';
 import { DashboardProvider } from '@/provider/dashboard.provider';
 import { getNavItems } from '@/utils/getNavItems';
 import { getRolebasedLinks } from '@/utils/getRolebaseLinks';
@@ -115,16 +116,7 @@ const DashboardLayoutContent = () => {
       >
         {/* Logo */}
         <div className="flex items-center justify-between px-5 py-2.5 border-b border-border">
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xs">
-                M
-              </span>
-            </div>
-            <span className="font-bold text-foreground text-base">
-              Mini ERP
-            </span>
-          </Link>
+          <Logo />
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden text-muted-foreground hover:text-foreground transition-colors"
