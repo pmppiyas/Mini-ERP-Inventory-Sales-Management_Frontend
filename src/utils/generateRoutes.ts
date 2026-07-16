@@ -1,8 +1,8 @@
 import type { ISidebarItem } from '@/interfaces/dashboard.interface';
 
 export const generateRoutes = (sidebarItems: ISidebarItem[]) => {
-  return sidebarItems.flatMap((section) =>
-    section.items
+  return sidebarItems.flatMap((section) => {
+    return (section.items ?? [])
       .filter((route) => !route.noRoute)
       .map((route) => {
         if (route.index) {
@@ -16,6 +16,6 @@ export const generateRoutes = (sidebarItems: ISidebarItem[]) => {
           path: route.path,
           Component: route.component,
         };
-      })
-  );
+      });
+  });
 };

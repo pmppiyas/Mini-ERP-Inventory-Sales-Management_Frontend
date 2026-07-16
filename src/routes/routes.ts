@@ -26,6 +26,6 @@ export const router = createBrowserRouter([
   {
     path: '/admin',
     Component: checkAuth(DashboardLayout, [Role.ADMIN]),
-    children: [...generateRoutes(adminNavItems), ...adminExtraRoutes],
+    children: [...generateRoutes(adminNavItems as any), ...adminExtraRoutes],
   },
 ]);

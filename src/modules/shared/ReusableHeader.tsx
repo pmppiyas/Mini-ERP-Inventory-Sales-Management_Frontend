@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import React from 'react';
 
@@ -37,13 +35,12 @@ const ReusableHeader = ({
     <header className="container max-w-7xl mx-auto px-6 py-6 rounded-xl mb-6 border bg-card shadow-sm">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Left Side */}
-        <div className="flex  gap-4 items-center  ">
+        <div className="flex gap-4 items-center">
           {icon && (
-            <div className="p-3 bg-primary text-primary-foreground rounded-xl">
+            <div className="p-3 bg-primary text-primary-foreground rounded-xl shrink-0">
               {icon}
             </div>
           )}
-
           <div>
             <h1 className="text-2xl font-bold text-foreground">{title}</h1>
             {description && (
@@ -54,7 +51,8 @@ const ReusableHeader = ({
           </div>
         </div>
 
-        <div className="flex gap-2  items-center md:justify-end md:ml-0">
+        {/* Right Side — actions + filter components */}
+        <div className="flex flex-wrap gap-2 items-center">
           {actions.map((action, index) => (
             <Button
               key={index}

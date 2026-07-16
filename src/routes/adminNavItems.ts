@@ -8,6 +8,7 @@ import EditUserPage from '@/modules/dashboard/admin/user/EditUserPage';
 import UserDetailsPage from '@/modules/shared/user/UserDetailsPage';
 import AdminMainPage from '@/modules/dashboard/admin/main/AdminMainPage';
 import { LayoutDashboard, Package, User, Users } from 'lucide-react';
+import AllCategoryPage from '@/modules/dashboard/admin/categroy/AllCategoryPage';
 
 export const adminNavItems = [
   {
@@ -39,7 +40,7 @@ export const adminNavItems = [
         path: 'products/create',
         icon: Package,
         component: AddProductPage,
-        noRoute: true, // registered in adminExtraRoutes
+        noRoute: true,
       },
     ],
   },
@@ -60,14 +61,26 @@ export const adminNavItems = [
         path: 'user/create',
         icon: User,
         component: AddUserPage,
-        noRoute: true, // registered in adminExtraRoutes
+        noRoute: true,
+      },
+    ],
+  },
+
+  {
+    section: 'Category',
+    items: [
+      {
+        id: 'category',
+        label: 'All Categories',
+        path: 'categories',
+        icon: Users,
+        component: AllCategoryPage,
       },
     ],
   },
 ];
 
 export const adminExtraRoutes = [
-  // Product routes — most specific first
   {
     path: 'products/create',
     Component: AddProductPage,
@@ -81,7 +94,6 @@ export const adminExtraRoutes = [
     Component: ProductDetailsPage,
   },
 
-  // User routes — most specific first
   {
     path: 'user/create',
     Component: AddUserPage,
@@ -92,10 +104,14 @@ export const adminExtraRoutes = [
   },
   {
     path: 'user/:id/permission',
-    Component: EditUserPage, // TODO: replace with PermissionPage when built
+    Component: EditUserPage,
   },
   {
     path: 'user/:id',
     Component: UserDetailsPage,
+  },
+  {
+    path: 'categories',
+    Component: AllCategoryPage,
   },
 ];
