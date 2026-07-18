@@ -2,6 +2,8 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import Logo from '@/modules/shared/Logo';
 import { DashboardProvider } from '@/provider/dashboard.provider';
+import { baseApi } from '@/redux/baseApi';
+import { useLogoutMutation } from '@/redux/features/auth/auth.api';
 import { getNavItems } from '@/utils/getNavItems';
 import { getRolebasedLinks } from '@/utils/getRolebaseLinks';
 import {
@@ -17,7 +19,9 @@ import {
   X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const quickActions = [
   {
@@ -102,6 +106,22 @@ const DashboardLayoutContent = () => {
     );
   };
 
+  const navigate = useNavigate();
+  const [logout] = useLogoutMutation();
+
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+      dispatch(baseApi.util.resetApiState());
+      navigate('/', { replace: true });
+      toast.success('Logged out successfully');
+    } catch (error) {
+      toast.error('Logout failed');
+    }
+  };
+
   return (
     <div className="container max-w-360 mx-auto min-h-[calc(100vh-70px)] flex h-screen overflow-hidden bg-muted/30">
       {/* ── Sidebar ── */}
@@ -169,7 +189,10 @@ const DashboardLayoutContent = () => {
 
         {/* Logout */}
         <div className="px-4 pb-5">
-          <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200">
+          <button
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
+            onClick={() => handleLogout()}
+          >
             <LogOut className="h-4 w-4" />
             <span>Logout</span>
           </button>

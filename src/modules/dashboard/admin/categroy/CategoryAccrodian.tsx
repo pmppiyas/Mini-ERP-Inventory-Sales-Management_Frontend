@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import type { ICategory } from '@/interfaces/category.interface';
 import { useDeleteCategoryMutation } from '@/redux/features/category/category.api';
 import { CategoryItem } from '@/modules/dashboard/admin/categroy/CategoryItem';
-import CategoryUpdateModal from '@/modules/dashboard/admin/categroy/CategoryUpdateModal';
+import CategoryModal from '@/modules/dashboard/admin/categroy/CategoryModal';
 import ConfirmModal from '@/modules/shared/ConfirmModal';
 
 const CategoryAccordion = ({ categories }: { categories: ICategory[] }) => {
@@ -13,9 +13,8 @@ const CategoryAccordion = ({ categories }: { categories: ICategory[] }) => {
   const [deleteCategory, { isLoading: isDeleting }] =
     useDeleteCategoryMutation();
 
-  const handleEdit = (category: ICategory) => setEditTarget(category);
-
-  const handleDelete = (category: ICategory) => setDeleteTarget(category);
+  const handleEdit = (cat: ICategory) => setEditTarget(cat);
+  const handleDelete = (cat: ICategory) => setDeleteTarget(cat);
 
   const confirmDelete = async () => {
     if (!deleteTarget) return;
@@ -41,14 +40,16 @@ const CategoryAccordion = ({ categories }: { categories: ICategory[] }) => {
         ))}
       </div>
 
-      {/* UPDATE MODAL */}
-      <CategoryUpdateModal
+      {/* EDIT —  */}
+      <CategoryModal
+        mode="UPDATE"
         open={!!editTarget}
         onClose={() => setEditTarget(null)}
         category={editTarget}
+        categories={categories}
       />
 
-      {/* DELETE MODAL */}
+      {/* DELETE CONFIRM */}
       <ConfirmModal
         open={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}

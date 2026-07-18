@@ -1,6 +1,7 @@
 import type {
   LoginCredentials,
   LoginResponse,
+  LogoutResponse,
 } from '@/interfaces/auth.interface';
 import { baseApi } from '@/redux/baseApi';
 
@@ -22,7 +23,15 @@ export const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ['AUTH'],
     }),
+
+    logout: builder.mutation<LogoutResponse, void>({
+      query: () => ({
+        url: '/auth/logout',
+        method: 'POST',
+      }),
+      invalidatesTags: ['AUTH'],
+    }),
   }),
 });
 
-export const { useLoginMutation, useGetMeQuery } = authApi;
+export const { useLoginMutation, useGetMeQuery, useLogoutMutation } = authApi;

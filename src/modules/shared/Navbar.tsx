@@ -1,5 +1,5 @@
 import { Menu } from 'lucide-react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -9,6 +9,11 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import Logo from '@/modules/shared/Logo';
+import { useLogoutMutation } from '@/redux/features/auth/auth.api';
+import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
+import { useDispatch } from 'react-redux';
+import { baseApi } from '@/redux/baseApi';
 
 const navLinks = [
   { title: 'Dashboard', url: '/admin' },
@@ -18,12 +23,26 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const isLoggedIn = true;
-  const user = { name: 'Admin', role: 'Admin' };
+  const navigate = useNavigate();
+  const [logout] = useLogoutMutation();
+  const { me } = useAuth();
+
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+      dispatch(baseApi.util.resetApiState());
+      navigate('/', { replace: true });
+      toast.success('Logged out successfully');
+    } catch (error) {
+      toast.error('Logout failed');
+    }
+  };
 
   return (
     <header className="bg-card border-b border-border sticky top-0 z-30">
-      <div className="container mx-auto px-5">
+      <div className="container mx-auto lg:px-5">
         {/* Desktop */}
         <nav className="hidden h-14 lg:flex items-center justify-between gap-6">
           {/* Logo */}
@@ -50,48 +69,38 @@ export default function Navbar() {
 
           {/* Right */}
           <div className="flex items-center gap-2">
-            {isLoggedIn ? (
+            {me?.data?.email ? (
               <>
-                <div className="flex items-center gap-2 text-sm border border-border rounded-lg px-3 py-1.5">
+                <div className="flex items-center gap-1 text-sm border border-border rounded-lg px-3 py-1">
                   <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-[9px] font-bold">
-                    {user.name[0]}
+                    {me?.data?.name[0]}
                   </div>
                   <span className="font-medium text-foreground">
-                    {user.name}
+                    {me?.data?.name}
                   </span>
                   <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                    {user.role}
+                    {me?.data?.role}
                   </span>
                 </div>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleLogout()}
+                >
                   Logout
                 </Button>
               </>
             ) : (
-              <>
-                <Button asChild variant="outline" size="sm">
-                  <Link to="/auth/login">Login</Link>
-                </Button>
-                <Button asChild size="sm">
-                  <Link to="/register">Register</Link>
-                </Button>
-              </>
+              <Button asChild variant="outline" size="sm">
+                <Link to="/auth/login">Login</Link>
+              </Button>
             )}
           </div>
         </nav>
 
         {/* Mobile */}
         <div className="flex h-14 items-center justify-between lg:hidden">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xs">
-                M
-              </span>
-            </div>
-            <span className="font-bold text-foreground text-base">
-              Mini ERP
-            </span>
-          </Link>
+          <Logo />
 
           <Sheet>
             <SheetTrigger asChild>
@@ -124,19 +133,20 @@ export default function Navbar() {
               </div>
 
               <div className="mt-6 pt-6 border-t border-border flex flex-col gap-2">
-                {isLoggedIn ? (
-                  <Button variant="outline" className="w-full">
+                {me?.data?.email ? (
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => {
+                      handleLogout();
+                    }}
+                  >
                     Logout
                   </Button>
                 ) : (
-                  <>
-                    <Button asChild variant="outline" className="w-full">
-                      <Link to="/auth/login">Login</Link>
-                    </Button>
-                    <Button asChild className="w-full">
-                      <Link to="/register">Register</Link>
-                    </Button>
-                  </>
+                  <Button asChild variant="outline" className="w-full">
+                    <Link to="/auth/login">Login</Link>
+                  </Button>
                 )}
               </div>
             </SheetContent>

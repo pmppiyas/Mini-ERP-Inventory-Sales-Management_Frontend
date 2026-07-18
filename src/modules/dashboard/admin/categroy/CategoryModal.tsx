@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import type { ICategory } from '@/interfaces/category.interface';
+import type {
+  ICategory,
+  ICategoryPayload,
+} from '@/interfaces/category.interface';
 import {
+  useCreateCategoryMutation,
   useUpdateCategoryMutation,
-  useGetCategoriesQuery,
 } from '@/redux/features/category/category.api';
-import { Loader2, Pencil, X } from 'lucide-react';
+import { Loader2, Pencil, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -16,34 +19,46 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-interface CategoryUpdateModalProps {
+interface CategoryModalProps {
   open: boolean;
   onClose: () => void;
-  category: ICategory | null;
+  mode: 'CREATE' | 'UPDATE';
+  category?: ICategory | null;
+  categories?: ICategory[] | null;
 }
 
-const CategoryUpdateModal = ({
+const CategoryModal = ({
   open,
   onClose,
+  mode,
   category,
-}: CategoryUpdateModalProps) => {
+  categories,
+}: CategoryModalProps) => {
   const [name, setName] = useState('');
   const [parentId, setParentId] = useState('');
 
-  const { data: allCategories = [] } = useGetCategoriesQuery();
-  const [updateCategory, { isLoading }] = useUpdateCategoryMutation();
+  const [createCategory, { isLoading: isCreating }] =
+    useCreateCategoryMutation();
+  const [updateCategory, { isLoading: isUpdating }] =
+    useUpdateCategoryMutation();
+
+  const isLoading = isCreating || isUpdating;
 
   useEffect(() => {
-    if (category) {
+    if (mode === 'UPDATE' && category) {
       setName(category.name);
       setParentId(category.parentId ?? '');
+    } else {
+      setName('');
+      setParentId('');
     }
-  }, [category]);
+  }, [mode, category, open]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && !isLoading) onClose();
     };
+
     if (open) document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, [open, isLoading, onClose]);
@@ -55,37 +70,62 @@ const CategoryUpdateModal = ({
     };
   }, [open]);
 
-  if (!open || !category) return null;
+  if (!open) return null;
+
+  const flattenCategories = (
+    cats: ICategory[],
+    level = 0,
+    excludeId?: string
+  ): (ICategory & { level: number })[] =>
+    cats.flatMap((cat) =>
+      cat._id === excludeId
+        ? []
+        : [
+            { ...cat, level },
+            ...flattenCategories(cat.children ?? [], level + 1, excludeId),
+          ]
+    );
+
+  const parentOptions = flattenCategories(categories ?? [], 0, category?._id);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
-      await updateCategory({
-        categoryId: category._id,
-        name: name.trim(),
-        ...(parentId && parentId !== 'none' ? { parentId } : {}),
-        MODE: 'EDIT',
-      }).unwrap();
-      toast.success(`"${name}" updated successfully!`);
+      if (mode === 'CREATE') {
+        await createCategory({
+          name: name.trim(),
+          ...(parentId ? { parentId } : {}),
+          categoryId: '',
+        }).unwrap();
+
+        toast.success('Category created successfully!');
+      } else {
+        const payload: ICategoryPayload = {
+          categoryId: category!._id,
+          MODE: 'EDIT',
+          name: name.trim(),
+        };
+
+        if (parentId !== (category?.parentId ?? '')) {
+          payload.parentId = parentId;
+        }
+
+        await updateCategory(payload).unwrap();
+
+        toast.success('Category updated successfully!');
+      }
+
       onClose();
-    } catch (err) {
-      console.log(err);
-      toast.error('Failed to update category.');
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        mode === 'CREATE'
+          ? 'Failed to create category.'
+          : 'Failed to update category.'
+      );
     }
   };
-
-  const flattenExcluding = (
-    cats: ICategory[],
-    excludeId: string
-  ): ICategory[] =>
-    cats.flatMap((c) =>
-      c._id === excludeId
-        ? []
-        : [c, ...flattenExcluding(c.children ?? [], excludeId)]
-    );
-
-  const parentOptions = flattenExcluding(allCategories, category._id);
-
   return (
     <div
       className="fixed inset-0 z-100 flex items-center justify-center p-4"
@@ -102,10 +142,14 @@ const CategoryUpdateModal = ({
         <div className="flex items-center justify-between border-b border-border px-5 py-4">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Pencil className="h-4 w-4 text-primary" />
+              {mode === 'CREATE' ? (
+                <Plus className="h-4 w-4 text-primary" />
+              ) : (
+                <Pencil className="h-4 w-4 text-primary" />
+              )}
             </div>
             <h2 className="text-sm font-semibold text-foreground">
-              Edit Category
+              {mode === 'CREATE' ? 'Add Category' : 'Edit Category'}
             </h2>
           </div>
           <button
@@ -141,16 +185,20 @@ const CategoryUpdateModal = ({
             </label>
             <Select
               value={parentId || 'none'}
-              onValueChange={(v) => setParentId(v === 'none' ? '' : v)}
-              disabled={isLoading}
+              onValueChange={(value) =>
+                setParentId(value === 'none' ? '' : value)
+              }
             >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="No parent (top level)" />
+              <SelectTrigger>
+                <SelectValue placeholder="No parent" />
               </SelectTrigger>
+
               <SelectContent>
-                <SelectItem value="none">No parent (top level)</SelectItem>
+                <SelectItem value="none">No parent (Top Level)</SelectItem>
+
                 {parentOptions.map((cat) => (
                   <SelectItem key={cat._id} value={cat._id}>
+                    {'— '.repeat(cat.level)}
                     {cat.name}
                   </SelectItem>
                 ))}
@@ -168,8 +216,10 @@ const CategoryUpdateModal = ({
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Saving...
+                  {mode === 'CREATE' ? 'Creating...' : 'Saving...'}
                 </>
+              ) : mode === 'CREATE' ? (
+                'Add Category'
               ) : (
                 'Save Changes'
               )}
@@ -189,4 +239,4 @@ const CategoryUpdateModal = ({
   );
 };
 
-export default CategoryUpdateModal;
+export default CategoryModal;

@@ -15,7 +15,7 @@ export interface ICategoryResponse {
 
 export interface ICategoryPayload {
   categoryId: string;
-  name?: string;
+  name: string;
   parentId?: string;
-  MODE: 'EDIT' | 'MOVE';
+  MODE?: 'EDIT' | 'MOVE';
 }

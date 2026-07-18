@@ -16,7 +16,7 @@ export const categoryApi = baseApi.injectEndpoints({
       providesTags: ['CATEGORY'],
     }),
 
-    addCategory: builder.mutation<ICategory, ICategoryPayload>({
+    createCategory: builder.mutation<ICategory, ICategoryPayload>({
       query: (data) => ({
         url: 'category/create',
         method: 'POST',
@@ -46,7 +46,7 @@ export const categoryApi = baseApi.injectEndpoints({
 
 export const {
   useGetCategoriesQuery,
-  useAddCategoryMutation,
+  useCreateCategoryMutation,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
 } = categoryApi;

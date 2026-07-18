@@ -1,8 +1,8 @@
 import React, { type JSX } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/useAuth';
 import type { TRole } from '@/interfaces/user.interface';
-import { Navigate } from 'react-router-dom';
 
 export function checkAuth<P extends object>(
   Component: React.ComponentType<P>,
@@ -10,13 +10,14 @@ export function checkAuth<P extends object>(
 ) {
   return function (props: P): JSX.Element {
     const { me, isLoading, isError } = useAuth();
+    const location = useLocation();
 
     if (isLoading) {
       return <div>Loading...</div>;
     }
 
     if (isError) {
-      return <Navigate to="/auth/login" replace />;
+      return <Navigate to="/auth/login" state={{ from: location }} replace />;
     }
 
     if (!me || !requiredRoles.includes(me.data.role)) {
