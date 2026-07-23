@@ -8,8 +8,6 @@ const AllUserHeader = () => {
   return (
     <ReusableHeader
       icon={<Users className="w-5 h-5" />}
-      title="User Management"
-      description="Manage all system users, their roles, and account information."
       components={[
         <RoleFilter key="role" />,
         <SearchFilter key="search" />,

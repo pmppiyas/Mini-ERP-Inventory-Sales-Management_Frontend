@@ -1,59 +1,64 @@
-import { Search } from 'lucide-react';
-import { useEffect, useState, type FormEvent } from 'react';
+import { Search, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 interface SearchFilterProps {
   placeholder?: string;
+  debounceMs?: number;
 }
 
-const SearchFilter = ({ placeholder = 'Search...' }: SearchFilterProps) => {
+const SearchFilter = ({
+  placeholder = 'Search...',
+  debounceMs = 400,
+}: SearchFilterProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [searchInput, setSearchInput] = useState(
-    searchParams.get('searchTerm') || ''
-  );
+  const [value, setValue] = useState(searchParams.get('searchTerm') || '');
 
+  // sync if URL changes externally (e.g. clear from outside)
   useEffect(() => {
-    setSearchInput(searchParams.get('searchTerm') || '');
-  }, [searchParams]);
+    setValue(searchParams.get('searchTerm') || '');
+  }, [searchParams.get('searchTerm')]);
 
-  const handleSearch = (e: FormEvent) => {
-    e.preventDefault();
+  // debounce → update URL
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const params = new URLSearchParams(searchParams);
+      if (value.trim()) {
+        params.set('searchTerm', value.trim());
+      } else {
+        params.delete('searchTerm');
+      }
+      params.set('page', '1');
+      setSearchParams(params, { replace: true });
+    }, debounceMs);
 
-    const params = new URLSearchParams(searchParams);
+    return () => clearTimeout(t);
+  }, [value]);
 
-    if (searchInput.trim()) {
-      params.set('searchTerm', searchInput.trim());
-    } else {
-      params.delete('searchTerm');
-    }
-
-    params.set('page', '1');
-
-    setSearchParams(params);
+  const handleClear = () => {
+    setValue('');
   };
 
   return (
-    <form
-      onSubmit={handleSearch}
-      className="flex items-center gap-2 max-w-sm w-full"
-    >
-      <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-
-        <Input
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          placeholder={placeholder}
-          className="pl-9"
-        />
-      </div>
-
-      <Button type="submit">Search</Button>
-    </form>
+    <div className="relative">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder={placeholder}
+        className="pl-9 pr-8 w-52"
+      />
+      {value && (
+        <button
+          onClick={handleClear}
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <X className="h-3.5 w-3.5" />
+        </button>
+      )}
+    </div>
   );
 };
 

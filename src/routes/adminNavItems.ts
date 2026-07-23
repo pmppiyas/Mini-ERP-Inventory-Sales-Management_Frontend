@@ -7,8 +7,17 @@ import AddUserPage from '@/modules/dashboard/admin/user/AddUserPage';
 import EditUserPage from '@/modules/dashboard/admin/user/EditUserPage';
 import UserDetailsPage from '@/modules/shared/user/UserDetailsPage';
 import AdminMainPage from '@/modules/dashboard/admin/main/AdminMainPage';
-import { LayoutDashboard, Package, User, Users } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  User,
+  Users,
+} from 'lucide-react';
 import AllCategoryPage from '@/modules/dashboard/admin/categroy/AllCategoryPage';
+import AllSalePage from '@/modules/dashboard/admin/sale/AllSalePage';
+import SaleDetailsPage from '@/modules/shared/sale/SaleDetailsPage';
+import MakeSalePage from '@/modules/dashboard/admin/sale/make/MakeSalePage';
 
 export const adminNavItems = [
   {
@@ -20,6 +29,26 @@ export const adminNavItems = [
         icon: LayoutDashboard,
         index: true,
         component: AdminMainPage,
+      },
+    ],
+  },
+
+  {
+    section: 'Sale',
+    items: [
+      {
+        id: 'sales',
+        label: 'Sales',
+        path: 'sales',
+        icon: ShoppingCart,
+        component: AllSalePage,
+      },
+      {
+        id: 'make_sale',
+        label: 'Make Sale',
+        path: 'sale/create',
+        icon: ShoppingCart,
+        component: MakeSalePage,
       },
     ],
   },
@@ -44,13 +73,24 @@ export const adminNavItems = [
       },
     ],
   },
-
+  {
+    section: 'Category',
+    items: [
+      {
+        id: 'category',
+        label: 'Categories',
+        path: 'categories',
+        icon: Users,
+        component: AllCategoryPage,
+      },
+    ],
+  },
   {
     section: 'Users',
     items: [
       {
         id: 'users',
-        label: 'All Users',
+        label: 'Users',
         path: 'users',
         icon: Users,
         component: AllUserPage,
@@ -62,19 +102,6 @@ export const adminNavItems = [
         icon: User,
         component: AddUserPage,
         noRoute: true,
-      },
-    ],
-  },
-
-  {
-    section: 'Category',
-    items: [
-      {
-        id: 'category',
-        label: 'All Categories',
-        path: 'categories',
-        icon: Users,
-        component: AllCategoryPage,
       },
     ],
   },
@@ -113,5 +140,13 @@ export const adminExtraRoutes = [
   {
     path: 'categories',
     Component: AllCategoryPage,
+  },
+  {
+    path: 'sale/create',
+    Component: MakeSalePage,
+  },
+  {
+    path: 'sale/:id',
+    Component: SaleDetailsPage,
   },
 ];

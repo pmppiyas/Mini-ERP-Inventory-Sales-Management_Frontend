@@ -14,8 +14,6 @@ import {
   Download,
   LogOut,
   Menu,
-  Printer,
-  QrCode,
   X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -25,34 +23,16 @@ import { toast } from 'sonner';
 
 const quickActions = [
   {
-    label: 'QR Code',
-    path: '/qr-generator',
-    icon: QrCode,
-    color: 'text-violet-500 bg-violet-500/10',
-  },
-  {
     label: 'Calculator',
     path: '/price-calculator',
     icon: Calculator,
     color: 'text-emerald-500 bg-emerald-500/10',
   },
   {
-    label: 'Print',
-    path: '/print-labels',
-    icon: Printer,
-    color: 'text-amber-500 bg-amber-500/10',
-  },
-  {
     label: 'Export',
     path: '/export',
     icon: Download,
     color: 'text-cyan-500 bg-cyan-500/10',
-  },
-  {
-    label: 'Alerts',
-    path: '/stock-alerts',
-    icon: Bell,
-    color: 'text-red-500 bg-red-500/10',
   },
   {
     label: 'Audit',

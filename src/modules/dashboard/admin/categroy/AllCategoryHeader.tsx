@@ -19,8 +19,6 @@ const AllCategoryHeader = () => {
     <>
       <ReusableHeader
         icon={<FolderTree className="h-5 w-5" />}
-        title="Category Management"
-        description="Organize your products by creating and managing categories for better inventory management."
         actions={[
           {
             label: 'Add Category',

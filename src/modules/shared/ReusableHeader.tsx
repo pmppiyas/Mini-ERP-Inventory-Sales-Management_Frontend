@@ -16,7 +16,7 @@ interface IAction {
 
 interface ReusableHeaderProps {
   icon?: React.ReactNode;
-  title: string;
+  title?: string;
   description?: string;
   actions?: IAction[];
   currentStatus?: string;
@@ -32,8 +32,8 @@ const ReusableHeader = ({
   components = [],
 }: ReusableHeaderProps) => {
   return (
-    <header className="container max-w-7xl mx-auto px-6 py-6 rounded-xl mb-6 border bg-card shadow-sm">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <header className="container max-w-7xl mx-auto p-5 rounded-xl mb-6 border bg-card shadow-sm">
+      <div className="flex  md:flex-row md:items-center justify-between gap-4">
         {/* Left Side */}
         <div className="flex gap-4 items-center">
           {icon && (
@@ -52,7 +52,10 @@ const ReusableHeader = ({
         </div>
 
         {/* Right Side — actions + filter components */}
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className="flex  flex-wrap  gap-2 items-center">
+          {components.map((component, index) => (
+            <React.Fragment key={index}>{component}</React.Fragment>
+          ))}
           {actions.map((action, index) => (
             <Button
               key={index}
@@ -63,9 +66,6 @@ const ReusableHeader = ({
               {action.icon && action.icon}
               {action.label}
             </Button>
-          ))}
-          {components.map((component, index) => (
-            <React.Fragment key={index}>{component}</React.Fragment>
           ))}
         </div>
       </div>

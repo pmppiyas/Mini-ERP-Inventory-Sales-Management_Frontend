@@ -12,7 +12,7 @@ const AllProductWrapper = () => {
   const page = Number(searchParams.get('page')) || 1;
   const limit = Number(searchParams.get('limit')) || 10;
   const category = searchParams.get('category') || undefined;
-  const searchTerm = searchParams.get('search') || undefined;
+  const searchTerm = searchParams.get('searchTerm') || undefined;
   const sort = searchParams.get('sort') || undefined;
 
   const { data, isLoading, error } = useGetProductsQuery({

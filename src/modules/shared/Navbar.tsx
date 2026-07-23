@@ -42,7 +42,7 @@ export default function Navbar() {
 
   return (
     <header className="bg-card border-b border-border sticky top-0 z-30">
-      <div className="container mx-auto lg:px-5">
+      <div className="container mx-auto px-2 lg:px-5">
         {/* Desktop */}
         <nav className="hidden h-14 lg:flex items-center justify-between gap-6">
           {/* Logo */}

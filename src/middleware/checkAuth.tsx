@@ -3,6 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/useAuth';
 import type { TRole } from '@/interfaces/user.interface';
+import DashboardLoading from '@/modules/skeleton/DashboardLoading';
 
 export function checkAuth<P extends object>(
   Component: React.ComponentType<P>,
@@ -13,7 +14,7 @@ export function checkAuth<P extends object>(
     const location = useLocation();
 
     if (isLoading) {
-      return <div>Loading...</div>;
+      return <DashboardLoading />;
     }
 
     if (isError) {

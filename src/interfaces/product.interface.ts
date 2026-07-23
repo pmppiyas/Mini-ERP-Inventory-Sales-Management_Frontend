@@ -6,6 +6,7 @@ export interface ProductQueryParams {
   searchTerm?: string;
   sort?: string;
   category?: string;
+  status?: string;
 }
 
 export interface IProduct {
